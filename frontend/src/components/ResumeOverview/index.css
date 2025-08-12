@@ -1,0 +1,39 @@
+.resume-overview-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.overview-card {
+    background-color: #f9fafb;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #f3f4f6;
+}
+
+.card-title {
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: #374151;
+}
+
+.card-content {
+    margin-top: 0.25rem;
+    font-weight: 800;
+    font-size: 1.875rem;
+}
+
+.rating-high {
+    color: #10B981;
+}
+
+.rating-low {
+    color: #F59E0B;
+}
+
+@media (min-width: 768px) {
+    .resume-overview-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

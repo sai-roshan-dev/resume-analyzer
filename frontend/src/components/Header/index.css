@@ -1,0 +1,57 @@
+/* Header container */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #3b82f6; /* blue-500 */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Logo styles */
+.header-logo {
+  color: white;
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-decoration: none;
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+.header-logo:hover {
+  color: #93c5fd; /* lighter blue */
+}
+
+/* Navigation links container (nav) */
+nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* Nav link base style */
+.nav-link {
+  color: #dbeafe; /* light blue */
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  user-select: none;
+}
+
+.nav-link:hover {
+  background-color: #2563eb; /* blue-600 */
+  color: white;
+}
+
+/* Active nav link style */
+.nav-link.active {
+  background-color: white;
+  color: #2563eb; /* blue-600 */
+  font-weight: 700;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.5);
+}
