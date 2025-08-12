@@ -2,7 +2,7 @@ const multer = require('multer');
 const path = require('path');
 const pdf = require('pdf-parse');
 const Resume = require('../models/Resume');
-const { mockAnalysis } = require('../services/analysisService'); // We'll create this mock service
+const { getAIAnalysis } = require('../services/analysisService');
 
 // Configure Multer for file uploads
 const storage = multer.memoryStorage();
@@ -35,16 +35,15 @@ const uploadResume = (req, res) => {
             const pdfData = await pdf(dataBuffer);
             const extractedText = pdfData.text;
 
-            // 2. Create a mock analysis response (we'll integrate the real AI later)
-            const analysisResult = mockAnalysis(extractedText);
+            // 2. Perform AI analysis using the new service
+            const aiAnalysisResult = await getAIAnalysis(extractedText);
 
             // 3. Save the data to MongoDB
             const newResume = new Resume({
                 fileName: req.file.originalname,
-                extractedData: {
-                    text: extractedText // Store the raw text for now
-                },
-                aiAnalysis: analysisResult // Save the mock analysis
+                // We are saving the raw extracted text as well
+                extractedData: aiAnalysisResult.extractedData, // <-- Check this line
+                aiAnalysis: aiAnalysisResult.aiAnalysis // <-- And this line
             });
             await newResume.save();
 
@@ -71,7 +70,35 @@ const getAllResumes = async (req, res) => {
     }
 };
 
+const getResumeById = async (req, res) => {
+    try {
+        const resume = await Resume.findById(req.params.id);
+        if (!resume) {
+            return res.status(404).json({ success: false, error: 'Resume not found.' });
+        }
+        res.status(200).json({ success: true, data: resume });
+    } catch (error) {
+        console.error('Error fetching resume by ID:', error);
+        res.status(500).json({ success: false, error: 'Internal server error.' });
+    }
+};
+
+const deleteResume = async (req, res) => {
+    try {
+        const resume = await Resume.findByIdAndDelete(req.params.id);
+        if (!resume) {
+            return res.status(404).json({ success: false, error: 'Resume not found.' });
+        }
+        res.status(200).json({ success: true, message: 'Resume deleted successfully.' });
+    } catch (error) {
+        console.error('Error deleting resume:', error);
+        res.status(500).json({ success: false, error: 'Internal server error.' });
+    }
+};
+
 module.exports = {
     uploadResume,
-    getAllResumes
+    getAllResumes,
+    getResumeById,
+    deleteResume
 };
